@@ -67,11 +67,6 @@ const sessionOptions = {
     },
 };
 
-// app.get("/", (req, res) => {
-//     res.send("root");
-// });
-
-
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -82,24 +77,12 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
-
-
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currentUser = req.user;
     next();
 });
-
-// app.get("/demouser", async(req, res) => {
-//     let fakeUser = new User(
-//         { email: "demouser@example.com",
-//           username: "demouser",
-//         });
-//     let registeredUser = await User.register(fakeUser, "demopassword"); 
-//     res.send(registeredUser);   
-// });
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
@@ -113,7 +96,6 @@ app.all("/*splat" , (req, res, next) => {
 app.use((err, req, res, next) => {
     let { statusCode= 500, message= "something went wrong!" } = err;
     res.render("error.ejs", {message});
-    // res.status(statusCode).send(message);
 });
 
 app.listen(8080, () => {
